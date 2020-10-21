@@ -5,12 +5,12 @@
 
 ###Set these strings to be locations where the binary/folder/script is located. 
 #Samtools is assumed to be in PATH
-hpop_bin = "~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar"
+hpop_bin = "./H-PoPGv0.2.0.jar"
 whp_bin = "whatshap polyphase"
 flopp_bin = "~/flopp/target/debug/flopp"
 haplo_script = "~/software/Haplosim/haplogenerator.py"
-nanosim_bin = "/home/jshaw/software/NanoSim/src/simulator.py"
-nanosim_model ="/home/jshaw/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
+nanosim_bin = "~/software/NanoSim/src/simulator.py"
+nanosim_model ="~/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
 
 ##This is for short-read simulation, not needed.
 art_folder = "~/software/art/"
@@ -37,6 +37,13 @@ for ploidy in range(3,5):
 
         ##Allele dosage for potatoes. Change depending on what your ploidy is.
 
+        dosage = ""
+        #3x dosage for potatoes
+        if ploidy == 3:
+            dosage = "[0.69,0.31,0]"
+        #4x dosage for potatoes
+        if ploidy == 4:
+            dosage = "[0.57,0.26,0.17,0]"
         #3x dosage for potatoes
         #dosage = "[0.69,0.31,0]"
         #4x dosage for potatoes
@@ -46,13 +53,21 @@ for ploidy in range(3,5):
         #6x dosage for potatoes
         #dosage = "[0.50,0.23,0.14,0.13,0,0]"
 
-        
+
+        #5x dosage for potatoes
+        if ploidy == 5:
+            dosage = "[0.50,0.23,0.14,0.13,0]"
+
+        #6x dosage for potatoes
+        if ploidy == 6:
+            dosage = "[0.50,0.23,0.14,0.13,0,0]"
+
         #Coverages of reads per haplotype to be tested.
         covs = [10,15,20]
 
         #Genome length in bp of the reference.
-        #gn_length = 3.02*10**6
-        gn_length = 100000
+        gn_length = 3.02*10**6
+        #gn_length = 100000
 
         #Mean length of the generated nanopore and pacbio reads. Empirically tested; DON"T CHANGE
         mean_len = 8400
@@ -96,7 +111,7 @@ for ploidy in range(3,5):
             folder_name_str = "RECOMB_" +str(recomb_freq)+ folder_name_str
 
         out_folder_name = './%s/%s/' %(str(ploidy),folder_name_str)
-        ref_file = out_folder_name + 'ref/potato_chr1_50000_noN.fa'
+        ref_file = out_folder_name + 'ref/potato_chr1_3M_noN.fa'
 
         ## Random standard mutation dict
         mut_dict = {'A':'C','G':'A','C':'T','T':'G'}
@@ -130,7 +145,7 @@ for ploidy in range(3,5):
                 call(s)
                 s = 'mkdir %s' %(hap_files_folder)
                 call(s,check_code=False)
-                s = "python %s -f %s -o %s/%s.fa --model poisson -s \"[%s,0,0]\" -p %s -v -m \"%s\" --dosage \"%s\"" %(haplo_script,ref_file,hap_files_folder,out_name,p_mut,ploidy,mut_dict,dosage)
+                s = "python2 %s -f %s -o %s/%s.fa --model poisson -s \"[%s,0,0]\" -p %s -v -m \"%s\" --dosage \"%s\"" %(haplo_script,ref_file,hap_files_folder,out_name,p_mut,ploidy,mut_dict,dosage)
                 call(s)
 
                 if recomb_genome:
