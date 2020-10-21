@@ -21,7 +21,7 @@ We also require that ``python2`` and ``python3`` be in PATH as Haplogenerator re
 
 ### To simulate genomes and test flopp/H-PoP against simulated genomes:
 1. In ``get_reads_bam_pipeline.py``, modify the strings at the top of the script indicating the locations of the various required scripts and binaries. Note : the pre-trained models in NanoSim must be unzipped prior to usage.
-2. ``python get_reads_bam_pipeline.py``
+2. ``python get_reads_bam_pipeline.py``. This step is expected to take up to a few days to complete. We strongly suggest the user to limit the ploidy range only up to ploidy 4 if they only want to quickly test the pipeline. 
 3. The results for for each ploidy are in the folder ``(ploidy)/*/results_auto``, where ploidy = 3,4,5,6 and each of the folders in the ploidy folder encapsulates one iteration of a run.
 
 ### To plot the results of the previous step
