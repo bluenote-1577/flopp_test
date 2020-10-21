@@ -5,7 +5,7 @@ The following are required to reproduce the simulation pipeline described in our
 
 1. [flopp](https://github.com/bluenote-1577/flopp) software built.
 2. [Haplogenerator](https://github.com/EhsanMotazedi/Haplosim) script must be available. 
-3. [NanoSim](https://github.com/bcgsc/NanoSim) must be useable and downloaded.
+3. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well.
 
 We include the following in this folder:
 
