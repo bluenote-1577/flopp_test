@@ -1,8 +1,19 @@
-#REQUIRES PYTHON 2 FOR gen_hap_files = True
-#REQUIRES PYTHON 3 FOR get_results = True
+#REQUIRES PYTHON 2, ALSO REQUIRES 'python3' to be a version of python3 in your path for NanoSim usage. 
 
 ##Testing script :
 ##Generates haplotype files, reads, tests haplotype phasers, and outputs results. 
+
+###Set these strings to be locations where the binary/folder/script is located. 
+#Samtools is assumed to be in PATH
+hpop_bin = "~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar"
+whp_bin = "whatshap polyphase"
+flopp_bin = "~/flopp/target/debug/flopp"
+haplo_script = "~/software/Haplosim/haplogenerator.py"
+nanosim_bin = "/home/jshaw/software/NanoSim/src/simulator.py"
+nanosim_model ="/home/jshaw/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
+
+##This is for short-read simulation, not needed.
+art_folder = "~/software/art/"
 
 import subprocess
 import time
@@ -12,13 +23,12 @@ from os import path
 
 num_iterations = 1
 
-
-
 for ploidy in range(3,5):
     for iternum in range(0,num_iterations):
         
         out_name = 'pds'
         
+        ##SIMULATION PARAMETERS
         # p_mut = 0.02
         # 0.02 corresponds to 67.2 avg between bases
         # p_mut = 0.03
@@ -36,11 +46,7 @@ for ploidy in range(3,5):
         #6x dosage for potatoes
         #dosage = "[0.50,0.23,0.14,0.13,0,0]"
 
-        ###Set these strings to be the locations of the hpop jar, the whp binary, and the flopp binary respectively. 
-        hpop_bin = "~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar"
-        whp_bin = "whatshap polyphase"
-        flopp_bin = "~/flopp/target/debug/flopp"
-
+        
         #Coverages of reads per haplotype to be tested.
         covs = [10,15,20]
 
@@ -124,7 +130,7 @@ for ploidy in range(3,5):
                 call(s)
                 s = 'mkdir %s' %(hap_files_folder)
                 call(s,check_code=False)
-                s = "python ~/software/Haplosim/haplogenerator.py -f %s -o %s/%s.fa --model poisson -s \"[%s,0,0]\" -p %s -v -m \"%s\" --dosage \"%s\"" %(ref_file,hap_files_folder,out_name,p_mut,ploidy,mut_dict,dosage)
+                s = "python %s -f %s -o %s/%s.fa --model poisson -s \"[%s,0,0]\" -p %s -v -m \"%s\" --dosage \"%s\"" %(haplo_script,ref_file,hap_files_folder,out_name,p_mut,ploidy,mut_dict,dosage)
                 call(s)
 
                 if recomb_genome:
@@ -153,7 +159,7 @@ for ploidy in range(3,5):
 
                 for i in range(1,ploidy+1):
                    ##Get paired reads for each hap
-                    s = "~/software/art/art_illumina --paired --in %s/%s.fa_hap%s.fa --out %s/%s_hap%s_paired_%sx_hs2500_350.fa --len 150 --fcov %s --mflen 650 --sdev 3.5 -1 ~/software/art/Illumina_profiles/HiSeq2500L150R1.txt -2 ~/software/art/Illumina_profiles/HiSeq2500L150R2.txt" %(hap_files_folder,out_name,str(i),sim_short_folder,out_name,str(i),cov,cov)
+                    s = "%s/art_illumina --paired --in %s/%s.fa_hap%s.fa --out %s/%s_hap%s_paired_%sx_hs2500_350.fa --len 150 --fcov %s --mflen 650 --sdev 3.5 -1 ~/software/art/Illumina_profiles/HiSeq2500L150R1.txt -2 ~/software/art/Illumina_profiles/HiSeq2500L150R2.txt" %(art_folder,hap_files_folder,out_name,str(i),sim_short_folder,out_name,str(i),cov,cov)
                     print(s)
                     process = call(s)
 
@@ -179,7 +185,7 @@ for ploidy in range(3,5):
                 s = 'samtools sort %s > %s' %(merged_bam_name,sorted_merged_bam_name)
                 call(s)
 
-                s = "java -jar ~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar -p %s -v %s -b %s -o %s/frag_files/illumina_%sx_frags.txt -b2f" %(ploidy,vcf_outfile,sorted_merged_bam_name,out_folder_name,cov)
+                s = "java -jar %s -p %s -v %s -b %s -o %s/frag_files/illumina_%sx_frags.txt -b2f" %(hpop_bin,ploidy,vcf_outfile,sorted_merged_bam_name,out_folder_name,cov)
                 process = call(s)
 
         for cov in covs:
@@ -201,7 +207,7 @@ for ploidy in range(3,5):
                     hap_file = '%s/%s.fa_hap%s.fa'%(hap_files_folder,out_name,i)
                     num_reads = int(gn_length/mean_length * cov)
                     out_file = '%s/%sx_%s_sim_%s_hap%s' %(read_folder,cov,type_of_read,out_name,i)
-                    s = 'python3 /home/jshaw/software/NanoSim/src/simulator.py genome -dna_type linear -rg %s -c /home/jshaw/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training -n %s -o %s -t 15 --fastq -b guppy' %(hap_file,num_reads,out_file)
+                    s = 'python3 %s genome -dna_type linear -rg %s -c %s -n %s -o %s -t 15 --fastq -b guppy' %(nanosim_bin,hap_file,nanosim_model,num_reads,out_file)
                     process = call(s)
 
                 for i in range(1,ploidy+1):
@@ -225,7 +231,7 @@ for ploidy in range(3,5):
                 s = 'mkdir %s/frag_files' %(out_folder_name)
                 call(s,check_code = False)
 
-                s = "java -jar ~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar -p %s -v %s -b %s/sorted_%s_merged_%sx_%s.bam -o %s/frag_files/%s_%sx_frags.txt -b2f"%(ploidy,vcf_outfile,aln_folder,out_name,cov,type_of_read,out_folder_name,type_of_read,cov)
+                s = "java -jar %s -p %s -v %s -b %s/sorted_%s_merged_%sx_%s.bam -o %s/frag_files/%s_%sx_frags.txt -b2f"%(hpop_bin,ploidy,vcf_outfile,aln_folder,out_name,cov,type_of_read,out_folder_name,type_of_read,cov)
                 process = call(s)
 
                 s = "rm %s/*.sam" %(aln_folder)
@@ -279,7 +285,7 @@ for ploidy in range(3,5):
 
                 s = 'mkdir %s/frag_files' %(out_folder_name)
                 call(s,check_code = False)
-                s = "java -jar ~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar -p %s -v %s -b %s/sorted_%s_merged_%sx_%s.bam -o %s/frag_files/%s_%sx_frags.txt -b2f"%(ploidy,vcf_outfile,aln_folder,out_name,cov,type_of_read,out_folder_name,type_of_read,cov)
+                s = "java -jar %s -p %s -v %s -b %s/sorted_%s_merged_%sx_%s.bam -o %s/frag_files/%s_%sx_frags.txt -b2f"%(hpop_bin,ploidy,vcf_outfile,aln_folder,out_name,cov,type_of_read,out_folder_name,type_of_read,cov)
                 process = call(s)
 
                 s = "rm %s/*.sam" %(aln_folder)
@@ -320,7 +326,7 @@ for ploidy in range(3,5):
                 s = 'mkdir frag_files'
                 call(s,check_code=False)
 
-                s = "java -jar ~/summer_project_phasing/H-PoPG/H-PoPGv0.2.0.jar -p %s -v potato_50000chr1.vcf -b %s/sorted_%s_merged_%sx_%s.bam -o frag_files/%s_%sx_frags.txt -b2f"%(ploidy,aln_folder,out_name,cov,type_of_read,type_of_read,cov)
+                s = "java -jar %s -p %s -v potato_50000chr1.vcf -b %s/sorted_%s_merged_%sx_%s.bam -o frag_files/%s_%sx_frags.txt -b2f"%(hpop_bin,ploidy,aln_folder,out_name,cov,type_of_read,type_of_read,cov)
                 process = call(s)
 
             if get_results:
