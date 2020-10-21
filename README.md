@@ -6,7 +6,7 @@ The following are required to reproduce the simulation pipeline described in our
 1. [flopp](https://github.com/bluenote-1577/flopp) software built.
 2. [Haplogenerator](https://github.com/EhsanMotazedi/Haplosim) script must be available. 
 3. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well. Note that you must unzip the pre-trained models before using this pipeline.
-4. samtools is expected to be in PATH.
+4. [samtools](https://github.com/samtools/samtools) is expected to be in PATH.
 5. [minimap2](https://github.com/lh3/minimap2) is expected to be in PATH.
 6. [SciencePlots](https://github.com/garrettj403/SciencePlots) must be installed.
 
