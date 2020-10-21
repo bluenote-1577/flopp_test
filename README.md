@@ -7,6 +7,7 @@ The following are required to reproduce the simulation pipeline described in our
 2. [Haplogenerator](https://github.com/EhsanMotazedi/Haplosim) script must be available. 
 3. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well. Note that you must unzip the pre-trained models before using this pipeline.
 4. samtools is expected to be in PATH.
+5. [minimap2](https://github.com/lh3/minimap2) is expected to be in PATH.
 
 Various python packages need to be installed to use haplogenerator/nanosim such as HTSeq, Biopython, etc. Furthermore, these packages need to be installed for python2 as Haplogenerator only works for python 2.7. 
 
@@ -15,7 +16,7 @@ We include the following in this folder:
 1. [H-PoPG](https://github.com/MinzhuXie/H-PoPG) jar file; we include a jar file in this folder. 
 2. [PaSS](http://cgm.sjtu.edu.cn/PaSS/) PacBio simulator; we include the binary in this folder. 
 
-We also require that ``python2`` and ``python3`` be in PATH as Haplogenerator requires python2 but NanoSim requires python3. 
+We also require that ``python2`` and ``python3`` be in PATH as Haplogenerator requires python2 but NanoSim requires python3 (it seems that NanoSim only works with python3). The appropriate python packages must be installed for both versions. 
 
 ### To simulate genomes and test flopp/H-PoP against simulated genomes:
 1. In ``get_reads_bam_pipeline.py``, modify the strings at the top of the script indicating the locations of the various required scripts and binaries. Note : the pre-trained models in NanoSim must be unzipped prior to usage.
