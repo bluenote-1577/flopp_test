@@ -7,6 +7,8 @@ The following are required to reproduce the simulation pipeline described in our
 2. [Haplogenerator](https://github.com/EhsanMotazedi/Haplosim) script must be available. 
 3. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well.
 
+Various python packages need to be installed to use haplogenerator/nanosim such as HTSeq, Biopython, etc. Furthermore, these packages need to be installed for python2 as Haplogenerator only works for python 2.7. 
+
 We include the following in this folder:
 
 4. [H-PoPG](https://github.com/MinzhuXie/H-PoPG) jar file; we include a jar file in this folder. 
