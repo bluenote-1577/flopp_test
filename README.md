@@ -5,7 +5,7 @@ The following are required to reproduce the simulation pipeline described in our
 
 1. [flopp](https://github.com/bluenote-1577/flopp) software built.
 2. [Haplogenerator](https://github.com/EhsanMotazedi/Haplosim) script must be available. 
-3. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well.
+3. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well. Note that you must unzip the pre-trained models before using this pipeline.
 4. samtools is expected to be in PATH.
 
 Various python packages need to be installed to use haplogenerator/nanosim such as HTSeq, Biopython, etc. Furthermore, these packages need to be installed for python2 as Haplogenerator only works for python 2.7. 
@@ -18,7 +18,7 @@ We include the following in this folder:
 We also require that ``python2`` and ``python3`` be in PATH as Haplogenerator requires python2 but NanoSim requires python3. 
 
 ### To simulate genomes and test flopp/H-PoP against simulated genomes:
-1. In ``get_reads_bam_pipeline.py``, modify the strings at the top of the script indicating the locations of the various required scripts and binaries. 
+1. In ``get_reads_bam_pipeline.py``, modify the strings at the top of the script indicating the locations of the various required scripts and binaries. Note : the pre-trained models in NanoSim must be unzipped prior to usage.
 2. ``python get_reads_bam_pipeline.py``
 3. The results for for each ploidy are in the folder ``(ploidy)/*/results_auto``, where ploidy = 3,4,5,6 and each of the folders in the ploidy folder encapsulates one iteration of a run.
 
