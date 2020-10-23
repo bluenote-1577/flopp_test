@@ -7,7 +7,7 @@ The following are required to reproduce the simulation pipeline described in our
 2. [NanoSim](https://github.com/bcgsc/NanoSim), the main script must be useable and the pre-trained models must be available as well. Note that you must unzip the pre-trained models before using this pipeline.
 3. [samtools](https://github.com/samtools/samtools) is expected to be in PATH.
 4. [minimap2](https://github.com/lh3/minimap2) is expected to be in PATH.
-5. [SciencePlots](https://github.com/garrettj403/SciencePlots) must be installed.
+5. [SciencePlots](https://github.com/garrettj403/SciencePlots) is used for plotting. 
 
 Various python packages need to be installed to use haplogenerator/nanosim such as HTSeq, Biopython, etc. Furthermore, these packages need to be installed for python2 as Haplogenerator only works for python 2.7. 
 
