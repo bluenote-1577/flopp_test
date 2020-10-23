@@ -1,3 +1,10 @@
+import subprocess
+import time
+import os
+from datetime import datetime
+from os import path
+import sys
+
 #REQUIRES PYTHON 2, ALSO REQUIRES 'python3' to be a version of python3 in your path for NanoSim usage. 
 
 ##Testing script :
@@ -7,7 +14,7 @@
 #Samtools is assumed to be in PATH
 hpop_bin = "./H-PoPGv0.2.0.jar"
 whp_bin = "whatshap polyphase"
-flopp_bin = "PATH_TO_FLOPP_DIR/flopp/target/debug/flopp"
+flopp_bin = "~/flopp/target/debug/flopp"
 haplo_script = "./Haplosim/haplogenerator.py"
 
 ##For NanoSim, one must unzip the training models and then format the string as in the below example. 
@@ -17,17 +24,40 @@ nanosim_model ="~/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712
 ##This is for short-read simulation, not needed.
 art_folder = "~/software/art/"
 
-import subprocess
-import time
-import os
-from datetime import datetime
-from os import path
+execute = True
+def call(s,execute = execute, check_code = True):
+    if execute:
+        code = subprocess.call(s,shell=True)
+        if code > 0 and check_code:
+            error_string = "Return code from command %s is not zero. Exiting!" %(s)
+            print(error_string)
+            exit()
+    else:
+        print(s)
 
-###Change this to 1 to greaterly speed up testing
+
+if len(sys.argv) < 2:
+    print("Use 'python get_reads_bam_pipeline.py quick' for a quick test or 'python get_reads_bam_pipeline.py full' to use the full pipeline")
+    exit()
+
 num_iterations = 3
+ploidy_range = (3,7)
 
-###Change this to (3,4) or (3,5) to greatly speed up testing.
-for ploidy in range(3,7):
+if sys.argv[1] == 'quick':
+    num_iterations = 1
+    ploidy_range = (3,5)
+elif sys.argv[1] == 'full':
+    num_iterations = 3
+    ploidy_range = (3,7)
+else:
+    print("Please use either 'quick' or 'full' for the second argument")
+    exit()
+
+##Check if flopp binary, NanoSim are available.
+call(flopp_bin + " --help")
+call("python3 " + nanosim_bin + ' -h' )
+
+for ploidy in range(ploidy_range):
     for iternum in range(0,num_iterations):
         
         out_name = 'pds'
@@ -70,7 +100,6 @@ for ploidy in range(3,7):
         ##Ignore
         recomb_freq = 0.001
 
-        execute = True
 
         ##Simulate haplotypes based on reference. This step is needed for downstream analysis.
         get_hap_files = True
@@ -117,17 +146,7 @@ for ploidy in range(3,7):
         hap_files_folder = '%s/hap_files' %(out_folder_name)
         vcf_outfile = '%s/%s.vcf' %(out_folder_name,out_name)
 
-        def call(s,execute = execute, check_code = True):
-            if execute:
-                code = subprocess.call(s,shell=True)
-                if code > 0 and check_code:
-                    error_string = "Return code from command %s is not zero. Exiting!" %(s)
-                    print(error_string)
-                    exit()
-            else:
-                print(s)
-
-        ##
+                ##
 
         s = 'mkdir -p %s' %(out_folder_name)
         call(s,check_code=False)
