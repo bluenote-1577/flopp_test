@@ -7,8 +7,8 @@
 #Samtools is assumed to be in PATH
 hpop_bin = "./H-PoPGv0.2.0.jar"
 whp_bin = "whatshap polyphase"
-flopp_bin = "~/flopp/target/debug/flopp"
-haplo_script = "~/software/Haplosim/haplogenerator.py"
+flopp_bin = "PATH_TO_FLOPP_DIR/flopp/target/debug/flopp"
+haplo_script = "./Haplosim/haplogenerator.py"
 nanosim_bin = "~/software/NanoSim/src/simulator.py"
 nanosim_model ="~/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
 
@@ -21,9 +21,11 @@ import os
 from datetime import datetime
 from os import path
 
-num_iterations = 1
+###Change this to 1 to greaterly speed up testing
+num_iterations = 3
 
-for ploidy in range(3,5):
+###Change this to (3,4) or (3,5) to greatly speed up testing.
+for ploidy in range(3,7):
     for iternum in range(0,num_iterations):
         
         out_name = 'pds'
@@ -44,15 +46,6 @@ for ploidy in range(3,5):
         #4x dosage for potatoes
         if ploidy == 4:
             dosage = "[0.57,0.26,0.17,0]"
-        #3x dosage for potatoes
-        #dosage = "[0.69,0.31,0]"
-        #4x dosage for potatoes
-        dosage = "[0.57,0.26,0.17,0]"
-        #5x dosage for potatoes
-        #dosage = "[0.50,0.23,0.14,0.13,0]"
-        #6x dosage for potatoes
-        #dosage = "[0.50,0.23,0.14,0.13,0,0]"
-
 
         #5x dosage for potatoes
         if ploidy == 5:
@@ -143,6 +136,7 @@ for ploidy in range(3,5):
                 call(s)
                 s = 'samtools faidx %s' %(ref_file)
                 call(s)
+
                 s = 'mkdir %s' %(hap_files_folder)
                 call(s,check_code=False)
                 s = "python2 %s -f %s -o %s/%s.fa --model poisson -s \"[%s,0,0]\" -p %s -v -m \"%s\" --dosage \"%s\"" %(haplo_script,ref_file,hap_files_folder,out_name,p_mut,ploidy,mut_dict,dosage)
