@@ -9,6 +9,8 @@ hpop_bin = "./H-PoPGv0.2.0.jar"
 whp_bin = "whatshap polyphase"
 flopp_bin = "PATH_TO_FLOPP_DIR/flopp/target/debug/flopp"
 haplo_script = "./Haplosim/haplogenerator.py"
+
+##For NanoSim, one must unzip the training models and then format the string as in the below example. 
 nanosim_bin = "~/software/NanoSim/src/simulator.py"
 nanosim_model ="~/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
 
@@ -131,7 +133,8 @@ for ploidy in range(3,7):
         call(s,check_code=False)
 
         if get_hap_files:
-            if not path.exists(hap_files_folder):
+            ##This messes up user experience because most likely the first couple attempts will be bad. 
+            if not path.exists(hap_files_folder) or True:
                 s = 'cp -r ref/ %s/ref' %(out_folder_name)
                 call(s)
                 s = 'samtools faidx %s' %(ref_file)
