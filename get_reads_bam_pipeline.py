@@ -57,7 +57,7 @@ else:
 call(flopp_bin + " --help")
 call("python3 " + nanosim_bin + ' -h' )
 
-for ploidy in range(ploidy_range):
+for ploidy in range(*ploidy_range):
     for iternum in range(0,num_iterations):
         
         out_name = 'pds'
