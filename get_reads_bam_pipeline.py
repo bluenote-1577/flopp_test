@@ -14,15 +14,15 @@ import sys
 #Samtools is assumed to be in PATH
 hpop_bin = "./H-PoPGv0.2.0.jar"
 whp_bin = "whatshap polyphase"
-flopp_bin = "~/flopp/target/debug/flopp"
+flopp_bin = "$HOME/software/flopp/target/release/flopp"
 haplo_script = "./Haplosim/haplogenerator.py"
 
 ##For NanoSim, one must unzip the training models and then format the string as in the below example. 
-nanosim_bin = "~/software/NanoSim/src/simulator.py"
-nanosim_model ="~/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
+nanosim_bin = "$HOME/software/NanoSim/src/simulator.py"
+nanosim_model ="$HOME/software/NanoSim/pre-trained_models/human_NA12878_DNA_FAB49712_guppy/training"
 
 ##This is for short-read simulation, not needed.
-art_folder = "~/software/art/"
+art_folder = "$HOME/software/art/"
 
 execute = True
 def call(s,execute = execute, check_code = True):
