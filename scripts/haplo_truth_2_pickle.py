@@ -5,7 +5,6 @@ haplo_string = sys.argv[1]
 out_haplo_string = sys.argv[2]
 ploidy = int(sys.argv[3])
 
-print("THER ENEEDS TO BE A FILLER LINE ON TOP!! ASSUME START AT LINE 2")
 with open(haplo_string,'r') as file:
     next(file)
     H = []
