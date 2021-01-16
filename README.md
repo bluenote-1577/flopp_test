@@ -1,3 +1,6 @@
+# Appendix for flopp paper
+
+The Appendix to the paper "Practical probabilistic and graphical formulations of long read haplotyping" is found in this repository and is titled "appendix.pdf". The rest of the repository is devoted to a pipeline that recreates the tesing pipeline for the the paper.  
 
 # Testing pipeline for flopp paper
 
