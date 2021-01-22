@@ -1,6 +1,6 @@
 # Appendix for flopp paper
 
-The Appendix to the paper "Practical probabilistic and graphical formulations of long read haplotyping" by Jim Shaw and Yun William Yu is found in this repository and is titled appendix.pdf. The rest of the repository is devoted to recreating the tesing pipeline for the paper.  
+The Appendix to the paper "Practical probabilistic and graphical formulations of long read haplotyping" by Jim Shaw and Yun William Yu is found in this repository and is titled [appendix.pdf](appendix.pdf). The rest of the repository is devoted to recreating the tesing pipeline for the paper.  
 
 # Testing pipeline for flopp paper
 
